@@ -93,6 +93,9 @@ if [ -f ./.system_backup/40-libinput.conf ]; then
 sudo dpkg -i -B ./xserver-xorg-input-libinput_0.28.2-2_armhf.deb
 fi
 
+if [ -f ./.have_installed ]; then
+sudo rm -rf ./.have_installed
+fi
 if [ -f ./.system_backup/.have_installed ]; then
 sudo cp -rf ./.system_backup/.have_installed ./
 fi
