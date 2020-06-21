@@ -1,6 +1,7 @@
 #!/bin/bash
-
 sudo ./system_backup.sh
+
+sudo cp -rf /boot/config.txt ./boot/config-nomal.txt
 
 sudo cp -rf ./boot/config-nomal.txt ./boot/config.txt.bak
 sudo echo "hdmi_force_hotplug=1" >> ./boot/config.txt.bak
@@ -65,5 +66,10 @@ elif [ $# -gt 1 ]; then
 echo "Too many parameters"
 fi
 
-echo "reboot now"
-sudo reboot
+read -r -p "Reboot is required, are you sure? " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    sudo reboot
+else
+    echo "Restart manually to apply the changes."
+fi

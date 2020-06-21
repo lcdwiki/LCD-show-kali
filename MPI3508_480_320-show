@@ -1,4 +1,8 @@
 #!/bin/bash
+sudo ./system_backup.sh
+
+sudo cp -rf /boot/config.txt ./boot/config-nomal.txt
+
 sudo rm -rf /etc/X11/xorg.conf.d/40-libinput.conf
 sudo cp -rf ./boot/config-35-480X320.txt /boot/config.txt 
 if [ -b /dev/mmcblk0p7 ]; then
@@ -29,4 +33,11 @@ fi
 else
 echo "this is not raspberrypi kernel, no need to update touch configure, reboot"
 fi
-sudo reboot
+
+read -r -p "Reboot is required, are you sure? " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    sudo reboot
+else
+    echo "Restart manually to apply the changes."
+fi

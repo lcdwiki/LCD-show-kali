@@ -104,7 +104,11 @@ sudo sync
 sudo sync
 
 echo "The system has been restored"
-echo "now reboot"
 sleep 1
-
-sudo reboot
+read -r -p "Reboot is required, are you sure? " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    sudo reboot
+else
+    echo "Restart manually to apply the changes."
+fi
