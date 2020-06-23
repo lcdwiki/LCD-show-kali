@@ -1,6 +1,9 @@
 LCD driver for the Raspberry PI Installation<br>
 ====================================================
 Update: <br>
+v2.0-20200623<br>
+Update touch screen function<br>
+Update: <br>
 v1.9-20181204<br>
 Update to support MHS40 & MHS32<br>
 Update: <br>
