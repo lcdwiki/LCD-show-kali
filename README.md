@@ -27,10 +27,10 @@ Update: <br>
 Update: <br>
   v1.1-20160815<br><br>
   
-1.)Step1, Install Raspbian official mirror <br>
+1.)Step1, Install Kali-linux official mirror <br>
 ====================================================
   a)Download Raspbian official mirror:<br>
-  https://www.raspberrypi.org/downloads/<br>
+  https://www.offensive-security.com/kali-linux-arm-images/<br>
   b)Use“SDFormatter.exe”to Format your TF Card<br>
   c)Use“Win32DiskImager.exe” Burning mirror to TF Card<br>
      
@@ -40,7 +40,7 @@ Use SSH to connect the raspberry pi, <br>
 And Ensure that the raspberry pi is connected to the Internet before executing the following commands:
 -----------------------------------------------------------------------------------------------------
 
-```sudo rm -rf LCD-show```<br>
+```sudo rm -rf LCD-show-kali```<br>
 ```git clone https://github.com/goodtft/LCD-show.git```<br>
 ```chmod -R 755 LCD-show```<br>
 ```cd LCD-show/```<br>
