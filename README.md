@@ -29,7 +29,7 @@ Update: <br>
   
 1.)Step1, Install Kali-linux official mirror <br>
 ====================================================
-  a)Download Raspbian official mirror:<br>
+  a)Download Kali-linux official mirror:<br>
   https://www.offensive-security.com/kali-linux-arm-images/<br>
   b)Use“SDFormatter.exe”to Format your TF Card<br>
   c)Use“Win32DiskImager.exe” Burning mirror to TF Card<br>
@@ -41,9 +41,9 @@ And Ensure that the raspberry pi is connected to the Internet before executing t
 -----------------------------------------------------------------------------------------------------
 
 ```sudo rm -rf LCD-show-kali```<br>
-```git clone https://github.com/goodtft/LCD-show.git```<br>
-```chmod -R 755 LCD-show```<br>
-```cd LCD-show/```<br>
+```git clone https://github.com/lcdwiki/LCD-show-kali.git```<br>
+```chmod -R 755 LCD-show-kali```<br>
+```cd LCD-show-kali/```<br>
   
 3.)Step3, According to your LCD's type, excute:
 ====================================================
