@@ -66,32 +66,32 @@ fi
 #echo -e "\033[31m$result\033[0m"
 #fi
 
-#if [ -f /usr/share/X11/xorg.conf.d/10-evdev.conf ]; then
-#sudo dpkg -P xserver-xorg-input-evdev
+if [ -f /usr/share/X11/xorg.conf.d/10-evdev.conf ]; then
+sudo dpkg -P xserver-xorg-input-evdev
 ##sudo apt-get purge xserver-xorg-input-evdev -y 2> error_output.txt
 ##result=`cat ./error_output.txt`
 ##echo -e "\033[31m$result\033[0m"
-#fi
-#if [ -f ./.system_backup/10-evdev.conf ]; then
-#sudo dpkg -i -B ./xserver-xorg-input-evdev_2.10.5-1_armhf.deb
+fi
+if [ -f ./.system_backup/10-evdev.conf ]; then
+sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb
 ##sudo apt-get install xserver-xorg-input-evdev -y 2> error_output.txt
 ##result=`cat ./error_output.txt`
 ##echo -e "\033[31m$result\033[0m"
-#fi
-
-#if [ -f /usr/share/X11/xorg.conf.d/45-evdev.conf ]; then
-#sudo rm -rf /usr/share/X11/xorg.conf.d/45-evdev.conf
-#fi
-#if [ -f ./.system_backup/45-evdev.conf ]; then
-#sudo cp -rf ./.system_backup/45-evdev.conf /usr/share/X11/xorg.conf.d
-#fi
-
-if [ -f /usr/share/X11/xorg.conf.d/40-libinput.conf ]; then
-sudo dpkg -P xserver-xorg-input-libinput 
 fi
-if [ -f ./.system_backup/40-libinput.conf ]; then
-sudo dpkg -i -B ./xserver-xorg-input-libinput_0.28.2-2_armhf.deb
+
+if [ -f /usr/share/X11/xorg.conf.d/45-evdev.conf ]; then
+sudo rm -rf /usr/share/X11/xorg.conf.d/45-evdev.conf
 fi
+if [ -f ./.system_backup/45-evdev.conf ]; then
+sudo cp -rf ./.system_backup/45-evdev.conf /usr/share/X11/xorg.conf.d
+fi
+
+#if [ -f /usr/share/X11/xorg.conf.d/40-libinput.conf ]; then
+#sudo dpkg -P xserver-xorg-input-libinput 
+#fi
+#if [ -f ./.system_backup/40-libinput.conf ]; then
+#sudo dpkg -i -B ./xserver-xorg-input-libinput_0.28.2-2_armhf.deb
+#fi
 
 if [ -f ./.have_installed ]; then
 sudo rm -rf ./.have_installed
