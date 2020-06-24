@@ -56,6 +56,9 @@ Wait a few minutes, the system asks you to restart, then enjoy your Kali Linux +
 
 # Changelog
 
+## v2.1-20200624
+- Update touch screen function
+
 ## v2.0-20200621
 - Update to support Kali Linux Version 2019 or higher (Solution to Kernel Panic)
 

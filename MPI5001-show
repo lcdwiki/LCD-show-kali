@@ -34,10 +34,10 @@ sudo cp ./usr/40-libinput.conf-0 /etc/X11/xorg.conf.d/40-libinput.conf
 sudo touch ./.have_installed
 echo "hdmi:capacity:MPI5001:0:800:480" > ./.have_installed
 
-sudo dpkg -i -B ./xserver-xorg-input-libinput_0.28.2-2_armhf.deb 2> error_output.txt
-result=`cat ./error_output.txt`
-echo -e "\033[31m$result\033[0m"
-grep -q "error:" ./error_output.txt && exit
+#sudo dpkg -i -B ./xserver-xorg-input-libinput_0.28.2-2_armhf.deb 2> error_output.txt
+#result=`cat ./error_output.txt`
+#echo -e "\033[31m$result\033[0m"
+#grep -q "error:" ./error_output.txt && exit
 
 sudo sync
 sudo sync

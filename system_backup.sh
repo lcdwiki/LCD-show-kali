@@ -66,26 +66,26 @@ fi
 #echo -e "\033[31m$result\033[0m"
 #fi
 
-#if [ -f /usr/share/X11/xorg.conf.d/10-evdev.conf ]; then
-#sudo cp -rf /usr/share/X11/xorg.conf.d/10-evdev.conf ./.system_backup
-#sudo dpkg -P xserver-xorg-input-evdev
+if [ -f /usr/share/X11/xorg.conf.d/10-evdev.conf ]; then
+sudo cp -rf /usr/share/X11/xorg.conf.d/10-evdev.conf ./.system_backup
+sudo dpkg -P xserver-xorg-input-evdev
 ##sudo apt-get purge xserver-xorg-input-evdev -y  2> error_output.txt
 ##result=`cat ./error_output.txt`
 ##echo -e "\033[31m$result\033[0m"
-#fi
+fi
 
-#if [ -f /usr/share/X11/xorg.conf.d/45-evdev.conf ]; then
-#sudo cp -rf /usr/share/X11/xorg.conf.d/45-evdev.conf ./.system_backup
-#sudo rm -rf /usr/share/X11/xorg.conf.d/45-evdev.conf
-#fi
+if [ -f /usr/share/X11/xorg.conf.d/45-evdev.conf ]; then
+sudo cp -rf /usr/share/X11/xorg.conf.d/45-evdev.conf ./.system_backup
+sudo rm -rf /usr/share/X11/xorg.conf.d/45-evdev.conf
+fi
 
-if [ -f /usr/share/X11/xorg.conf.d/40-libinput.conf ]; then
-sudo cp -rf /usr/share/X11/xorg.conf.d/40-libinput.conf ./.system_backup
-sudo dpkg -P xserver-xorg-input-libinput
+#if [ -f /usr/share/X11/xorg.conf.d/40-libinput.conf ]; then
+#sudo cp -rf /usr/share/X11/xorg.conf.d/40-libinput.conf ./.system_backup
+#sudo dpkg -P xserver-xorg-input-libinput
 #sudo apt-get purge xserver-xorg-input-evdev -y  2> error_output.txt
 #result=`cat ./error_output.txt`
 #echo -e "\033[31m$result\033[0m"
-fi
+#fi
 
 if [ -f ./.have_installed ]; then
 sudo cp -rf ./.have_installed ./.system_backup
