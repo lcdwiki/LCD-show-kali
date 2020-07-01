@@ -56,6 +56,9 @@ Wait a few minutes, the system asks you to restart, then enjoy your Kali Linux +
 
 # Changelog
 
+## v2.2-20200701
+- Update MPI4008 touch screen calibration parameters
+
 ## v2.1-20200624
 - Update touch screen function
 
