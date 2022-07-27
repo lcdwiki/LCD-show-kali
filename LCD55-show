@@ -9,13 +9,13 @@ sudo echo "hdmi_force_hotplug=1" >> ./boot/config.txt.bak
 sudo echo "dtparam=i2c_arm=on" >> ./boot/config.txt.bak
 sudo echo "dtparam=spi=on" >> ./boot/config.txt.bak
 sudo echo "enable_uart=1" >> ./boot/config.txt.bak
-sudo echo "display_rotate=1" >> ./boot/config.txt.bak
+sudo echo "display_rotate=0" >> ./boot/config.txt.bak
 sudo echo "max_framebuffer_height=1920" >> ./boot/config.txt.bak
 sudo echo "max_usb_current=1" >> ./boot/config.txt.bak
 sudo echo "config_hdmi_boost=7" >> ./boot/config.txt.bak
 sudo echo "hdmi_group=2" >> ./boot/config.txt.bak
 sudo echo "hdmi_mode=87" >> ./boot/config.txt.bak
-sudo echo "hdmi_drive=2" >> ./boot/config.txt.bak
+sudo echo "hdmi_drive=1" >> ./boot/config.txt.bak
 sudo echo "hdmi_cvt 1920 1080 60 6 0 0 0" >> ./boot/config.txt.bak
 sudo cp -rf ./boot/config.txt.bak /boot/config.txt
 
