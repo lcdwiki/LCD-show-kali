@@ -10,7 +10,9 @@ sudo mkdir -p /etc/X11/xorg.conf.d
 fi
 sudo cp ./usr/mhs32-overlay.dtb /boot/overlays/
 sudo cp ./usr/mhs32-overlay.dtb /boot/overlays/mhs32.dtbo
-sudo cp -rf ./boot/config-nomal.txt ./boot/config.txt.bak
+
+source ./system_config.sh
+#sudo cp -rf ./boot/config-nomal.txt ./boot/config.txt.bak
 sudo echo "hdmi_force_hotplug=1" >> ./boot/config.txt.bak
 sudo echo "dtparam=i2c_arm=on" >> ./boot/config.txt.bak
 sudo echo "dtparam=spi=on" >> ./boot/config.txt.bak
@@ -57,28 +59,39 @@ echo "gpio:resistance:mhs32:270:480:320" > ./.have_installed
 #nodeplatform=`uname -n`
 #kernel=`uname -r`
 #version=`uname -v`
-version=`lsb_release -r|awk -F ' ' '{printf $2}'`
+#version=`lsb_release -r|awk -F ' ' '{printf $2}'`
 #if test "$nodeplatform" = "raspberrypi";then
 #echo "this is raspberrypi kernel"
 #version=${version%% *}
 #version=${version#*#}
 echo $version
 #if test $version -lt 970;then
-if [[ "$version" < "2020.2" ]]; then
-echo "reboot"
-else
+if [[ "$version" = "2020.2" ]] || [[ "$version" > "2020.2" ]]; then
+#echo "reboot"
+#else
 echo "need to update touch configuration"
+wget --spider -q -o /dev/null --tries=1 -T 10 https://www.x.org
+if [ $? -eq 0 ]; then
+sudo apt-get update
+sudo apt-get install xserver-xorg-input-evdev  2> error_output.txt
+else
+if [ $hardware_arch -eq 32 ]; then
 sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb 2> error_output.txt
+elif [ $hardware_arch -eq 64 ]; then
+sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2+b1_arm64.deb 2> error_output.txt
+fi
+fi
+#sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb 2> error_output.txt
 ##sudo apt-get install xserver-xorg-input-evdev  2> error_output.txt
 result=`cat ./error_output.txt`
 echo -e "\033[31m$result\033[0m"
 grep -q "error:" ./error_output.txt && exit
 sudo cp -rf /usr/share/X11/xorg.conf.d/10-evdev.conf /usr/share/X11/xorg.conf.d/45-evdev.conf
 ##echo "reboot"
-fi
-#else
-#echo "this is not raspberrypi kernel, no need to update touch configure, reboot"
 #fi
+else
+echo "This version is lower than kali 2020.2, no need to update touch configure, reboot"
+fi
 
 sudo sync
 sudo sync
