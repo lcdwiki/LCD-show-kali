@@ -4,7 +4,11 @@ sudo mkdir -p /etc/X11/xorg.conf.d
 sudo cp ./usr/mhs24-overlay.dtb /boot/overlays/
 sudo cp ./usr/mhs24-overlay.dtb /boot/overlays/mhs24.dtbo
 sudo cp -rf ./usr/99-calibration.conf-mhs24  /etc/X11/xorg.conf.d/99-calibration.conf
-sudo cp -rf ./usr/99-fbturbo-fbcp.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+if [ $hardware_model -eq 5 ]; then
+sudo cp -rf ./usr/99-fbturbo-PI5.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+else
+sudo cp -rf ./usr/99-fbturbo.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+fi
 if [ -b /dev/mmcblk0p7 ]; then
 sudo cp ./usr/cmdline.txt-noobs /boot/cmdline.txt
 else

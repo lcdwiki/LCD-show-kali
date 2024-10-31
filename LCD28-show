@@ -20,7 +20,11 @@ sudo echo "enable_uart=1" >> ./boot/config.txt.bak
 sudo echo "dtoverlay=tft9341:rotate=270" >> ./boot/config.txt.bak
 sudo cp -rf ./boot/config.txt.bak /boot/config.txt
 sudo cp -rf ./usr/99-calibration.conf-32-270  /etc/X11/xorg.conf.d/99-calibration.conf
+if [ $hardware_model -eq 5 ]; then
+sudo cp -rf ./usr/99-fbturbo-PI5.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+else
 sudo cp -rf ./usr/99-fbturbo.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+fi
 if [ -b /dev/mmcblk0p7 ]; then
 sudo cp ./usr/cmdline.txt-noobs /boot/cmdline.txt
 else
