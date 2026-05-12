@@ -3,83 +3,93 @@
 sudo ./system_backup.sh
 
 source ./system_config.sh
+
+# Remove old X11 config if exists
 if [ -f /etc/X11/xorg.conf.d/40-libinput.conf ]; then
-sudo rm -rf /etc/X11/xorg.conf.d/40-libinput.conf
+    sudo rm -rf /etc/X11/xorg.conf.d/40-libinput.conf
 fi
+
+# Ensure X11 directory exists
 if [ ! -d /etc/X11/xorg.conf.d ]; then
-sudo mkdir -p /etc/X11/xorg.conf.d
+    sudo mkdir -p /etc/X11/xorg.conf.d
 fi
-sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/
-sudo cp ./usr/tft35a-overlay.dtb /boot/overlays/tft35a.dtbo
 
-#sudo cp -rf ./boot/config-nomal.txt ./boot/config.txt.bak
-sudo echo "hdmi_force_hotplug=1" >> ./boot/config.txt.bak
-sudo echo "dtparam=i2c_arm=on" >> ./boot/config.txt.bak
-sudo echo "dtparam=spi=on" >> ./boot/config.txt.bak
-sudo echo "enable_uart=1" >> ./boot/config.txt.bak
-sudo echo "dtoverlay=tft35a:rotate=90" >> ./boot/config.txt.bak
-sudo cp -rf ./boot/config.txt.bak /boot/config.txt
+# Copy TFT overlay files (FIXED PATH)
+sudo cp ./usr/tft35a-overlay.dtb /boot/firmware/overlays/
+sudo cp ./usr/tft35a-overlay.dtb /boot/firmware/overlays/tft35a.dtbo
 
-sudo cp -rf ./usr/99-calibration.conf-35-90  /etc/X11/xorg.conf.d/99-calibration.conf
-if [ $hardware_model -eq 5 ]; then
-sudo cp -rf ./usr/99-fbturbo-PI5.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+# Backup config
+sudo cp /boot/firmware/config.txt ./boot/config.txt.bak
+
+# Append config settings safely
+echo "hdmi_force_hotplug=1" | sudo tee -a ./boot/config.txt.bak
+echo "dtparam=i2c_arm=on" | sudo tee -a ./boot/config.txt.bak
+echo "dtparam=spi=on" | sudo tee -a ./boot/config.txt.bak
+echo "enable_uart=1" | sudo tee -a ./boot/config.txt.bak
+echo "dtoverlay=tft35a:rotate=90" | sudo tee -a ./boot/config.txt.bak
+
+# Apply config (FIXED PATH)
+sudo cp ./boot/config.txt.bak /boot/firmware/config.txt
+
+# X calibration config
+sudo cp -rf ./usr/99-calibration.conf-35-90 /etc/X11/xorg.conf.d/99-calibration.conf
+
+# FBTURBO config
+if [ "$hardware_model" -eq 5 ]; then
+    sudo cp -rf ./usr/99-fbturbo-PI5.conf /usr/share/X11/xorg.conf.d/99-fbturbo.conf
 else
-sudo cp -rf ./usr/99-fbturbo.conf  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+    sudo cp -rf ./usr/99-fbturbo.conf /usr/share/X11/xorg.conf.d/99-fbturbo.conf
 fi
+
+# FIXED BOOT PATH (IMPORTANT CHANGE)
 if [ -b /dev/mmcblk0p7 ]; then
-sudo cp ./usr/cmdline.txt-noobs /boot/cmdline.txt
+    sudo cp ./usr/cmdline.txt-noobs /boot/firmware/cmdline.txt
 else
-sudo cp ./usr/cmdline.txt /boot/
+    sudo cp ./usr/cmdline.txt /boot/firmware/cmdline.txt
 fi
-#sudo cp ./usr/inittab /etc/
-#sudo cp ./boot/config-35.txt /boot/config.txt
+
+# Mark installation
 sudo touch ./.have_installed
 echo "gpio:resistance:35:90:480:320" > ./.have_installed
-##evdev install
-#nodeplatform=`uname -n`
-#kernel=`uname -r`
-#version=`uname -v`
-#version=`lsb_release -r|awk -F ' ' '{printf $2}'`
-#if test "$nodeplatform" = "raspberrypi";then
-#echo "this is raspberrypi kernel"
-#version=${version%% *}
-#version=${version#*#}
+
 echo $version
-#if test $version -lt 970;then
+
+# Touch driver logic
 if [[ "$version" = "2020.2" ]] || [[ "$version" > "2020.2" ]]; then
-#echo "reboot"
-#else
-echo "need to update touch configuration"
-wget --spider -q -o /dev/null --tries=1 -T 10 https://www.x.org
-if [ $? -eq 0 ]; then
-sudo apt-get update
-sudo apt-get install xserver-xorg-input-evdev  2> error_output.txt
+
+    echo "need to update touch configuration"
+
+    wget --spider -q -o /dev/null --tries=1 -T 10 https://www.x.org
+    if [ $? -eq 0 ]; then
+        sudo apt-get update
+        sudo apt-get install xserver-xorg-input-evdev 2> error_output.txt
+    else
+        if [ "$hardware_arch" -eq 32 ]; then
+            sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb 2> error_output.txt
+        elif [ "$hardware_arch" -eq 64 ]; then
+            sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2+b1_arm64.deb 2> error_output.txt
+        fi
+    fi
+
+    result=$(cat ./error_output.txt)
+    echo -e "\033[31m$result\033[0m"
+
+    grep -q "error:" ./error_output.txt && exit
+
+    sudo cp -rf /usr/share/X11/xorg.conf.d/10-evdev.conf /usr/share/X11/xorg.conf.d/45-evdev.conf
+
 else
-if [ $hardware_arch -eq 32 ]; then
-sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb 2> error_output.txt
-elif [ $hardware_arch -eq 64 ]; then
-sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2+b1_arm64.deb 2> error_output.txt
-fi
-fi
-#sudo dpkg -i -B ./xserver-xorg-input-evdev_1%3a2.10.6-2_armhf.deb 2> error_output.txt
-##sudo apt-get install xserver-xorg-input-evdev  2> error_output.txt
-result=`cat ./error_output.txt`
-echo -e "\033[31m$result\033[0m"
-grep -q "error:" ./error_output.txt && exit
-sudo cp -rf /usr/share/X11/xorg.conf.d/10-evdev.conf /usr/share/X11/xorg.conf.d/45-evdev.conf
-##echo "reboot"
-#fi
-else
-echo "This version is lower than kali 2020.2, no need to update touch configure, reboot"
+    echo "This version is lower than kali 2020.2, no need to update touch configure"
 fi
 
 sudo sync
 sudo sync
 sleep 1
+
 if [ $# -eq 1 ]; then
-sudo ./rotate.sh $1
+    sudo ./rotate.sh $1
 elif [ $# -gt 1 ]; then
-echo "Too many parameters"
+    echo "Too many parameters"
 fi
 
 echo "reboot now"
